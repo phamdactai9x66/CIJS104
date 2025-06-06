@@ -9,10 +9,12 @@ import { statusEnums, tasks } from "./utils/constants";
 function App() {
   const [data, setData] = useState([...tasks]);
 
+  const [statusModal, setStatusModal] = useState(false);
+
   return (
     <React.Fragment>
       <div className="App">
-        <Header setData={setData} />
+        <Header setData={setData} setStatusModal={setStatusModal} />
 
         <div className="container">
           <div className="col">
@@ -38,7 +40,11 @@ function App() {
       </div>
       {/* Modal */}
 
-      {/* <Modal /> */}
+      {statusModal ? (
+        <Modal setData={setData} setStatusModal={setStatusModal} />
+      ) : (
+        ""
+      )}
     </React.Fragment>
   );
 }

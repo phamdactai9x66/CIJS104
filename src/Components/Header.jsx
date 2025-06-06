@@ -2,6 +2,7 @@ import React from "react";
 import { tasks } from "../utils/constants";
 
 const Header = (props) => {
+  // console.log(props);
   const onSearch = (event) => {
     const searchTask = tasks.filter((task) => {
       const searchTitle = task.title.toLowerCase();
@@ -19,6 +20,10 @@ const Header = (props) => {
 
     props.setData(searchTask);
   };
+
+  const onOpenModal = () => {
+    props.setStatusModal(true);
+  };
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <input
@@ -29,7 +34,7 @@ const Header = (props) => {
         placeholder="Searching..."
       />
 
-      <button>New Items</button>
+      <button onClick={onOpenModal}>New Items</button>
     </div>
   );
 };
