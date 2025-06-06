@@ -7,7 +7,14 @@ const ListCard = ({ tasks, targetStatus }) => {
   );
 
   return filterTasksTodo.map((e) => {
-    return <Card id={e.taskId} title={e.title} description={e.description} />;
+    return (
+      <Card
+        key={e.taskId}
+        id={e.taskId}
+        title={e.title}
+        description={e.description}
+      />
+    );
   });
 };
 
