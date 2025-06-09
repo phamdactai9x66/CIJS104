@@ -16,7 +16,7 @@ export const statusEnums = {
 export const taskStatus = [
   { statusId: statusEnums.TODO, name: "To Do" },
   { statusId: statusEnums.IN_PROGRESS, name: "In Progress" },
-  { statusId: statusEnums.IN_PROGRESS, name: "In Review" },
+  { statusId: statusEnums.IN_REVIEW, name: "In Review" },
   { statusId: statusEnums.DONE, name: "Done" },
 ];
 
