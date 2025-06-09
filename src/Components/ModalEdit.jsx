@@ -2,6 +2,7 @@ import React from "react";
 import { statusEnums, taskStatus } from "../utils/constants";
 
 const ModalEdit = (props) => {
+  console.log(props);
   const [titleValue, setTitleValue] = React.useState("");
 
   const [desValue, setDesValue] = React.useState("");
@@ -31,11 +32,19 @@ const ModalEdit = (props) => {
       statusId: +status,
     };
 
-    console.log(body);
+    const editItems = props.data.map((item) => {
+      if (item.taskId == props.id) {
+        return {
+          ...item,
+          ...body,
+        };
+      }
+      return item;
+    });
 
-    // props.setData((preValue) => {
-    //   return [...preValue, body];
-    // });
+    props.setData(editItems);
+
+    props.setStatusModal(false);
   };
 
   const onCloseModal = () => {

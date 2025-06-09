@@ -34,6 +34,7 @@ const Modal = (props) => {
     props.setData((preValue) => {
       return [...preValue, body];
     });
+    props.setStatusModal(false);
   };
 
   const onCloseModal = () => {

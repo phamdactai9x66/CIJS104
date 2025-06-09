@@ -65,6 +65,7 @@ function App() {
       {statusModalEdit.status ? (
         <ModalEdit
           setData={setData}
+          data={data}
           id={statusModalEdit.taskId}
           setStatusModal={setStatusModalEdit}
         />
