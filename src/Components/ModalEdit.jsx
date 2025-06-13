@@ -21,7 +21,7 @@ const ModalEdit = (props) => {
     setStatus(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     // id props.id
@@ -32,17 +32,16 @@ const ModalEdit = (props) => {
       statusId: +status,
     };
 
-    const editItems = props.data.map((item) => {
-      if (item.taskId == props.id) {
-        return {
-          ...item,
-          ...body,
-        };
-      }
-      return item;
+    // REST GET < POST < PUT < DELETE
+    await fetch(`http://localhost:4000/tasks/${props.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     });
 
-    props.setData(editItems);
+    // props.setData(editItems);
 
     props.setStatusModal(false);
   };

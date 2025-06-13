@@ -10,8 +10,8 @@ const ListCard = ({ tasks, targetStatus, setStatusModalEdit }) => {
   return filterTasksTodo.map((e) => {
     return (
       <Card
-        key={e.taskId}
-        id={e.taskId}
+        key={e.id || e.taskId}
+        id={e.id || e.taskId}
         title={e.title}
         description={e.description}
         setStatusModalEdit={setStatusModalEdit}

@@ -21,7 +21,7 @@ const Modal = (props) => {
     setStatus(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     const body = {
@@ -31,24 +31,15 @@ const Modal = (props) => {
       statusId: +status,
     };
 
-    // POST, PUT , DELETE, GET
-    fetch("http://localhost:4000/tasks", {
+    // REST FULL POST, PUT , DELETE, GET
+    await fetch("http://localhost:4000/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    });
 
-    // props.setData((preValue) => {
-    //   return [...preValue, body];
-    // });
     props.setStatusModal(false);
   };
 
