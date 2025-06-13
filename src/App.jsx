@@ -4,11 +4,11 @@ import "./App.css";
 import Header from "./Components/Header";
 import ListCard from "./Components/ListCard";
 import Modal from "./Components/Modal";
-import { statusEnums, tasks } from "./utils/constants";
+import { statusEnums } from "./utils/constants";
 import ModalEdit from "./Components/ModalEdit";
 
 function App() {
-  const [data, setData] = useState([...tasks]);
+  const [data, setData] = useState([]);
 
   const [statusModal, setStatusModal] = useState(false);
 
@@ -16,6 +16,19 @@ function App() {
     status: false,
     taskId: null,
   });
+
+  React.useEffect(() => {
+    fetch("http://localhost:4000/tasks")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <React.Fragment>
