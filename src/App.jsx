@@ -17,8 +17,8 @@ function App() {
     taskId: null,
   });
 
-  React.useEffect(() => {
-    fetch("http://localhost:4000/tasks")
+  const handleApi = () => {
+    fetch("http://localhost:4000/tasks", { method: "GET" })
       .then((res) => {
         return res.json();
       })
@@ -28,6 +28,10 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  React.useEffect(() => {
+    handleApi();
   }, []);
 
   return (
@@ -89,7 +93,11 @@ function App() {
       {/* Modal Create */}
 
       {statusModal ? (
-        <Modal setData={setData} setStatusModal={setStatusModal} />
+        <Modal
+          handleApi={handleApi}
+          setData={setData}
+          setStatusModal={setStatusModal}
+        />
       ) : (
         ""
       )}

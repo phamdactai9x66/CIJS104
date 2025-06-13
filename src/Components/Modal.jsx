@@ -41,6 +41,8 @@ const Modal = (props) => {
     });
 
     props.setStatusModal(false);
+
+    props.handleApi();
   };
 
   const onCloseModal = () => {
