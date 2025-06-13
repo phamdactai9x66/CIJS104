@@ -31,9 +31,24 @@ const Modal = (props) => {
       statusId: +status,
     };
 
-    props.setData((preValue) => {
-      return [...preValue, body];
-    });
+    // POST, PUT , DELETE, GET
+    fetch("http://localhost:4000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // props.setData((preValue) => {
+    //   return [...preValue, body];
+    // });
     props.setStatusModal(false);
   };
 
