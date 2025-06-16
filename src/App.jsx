@@ -17,7 +17,13 @@ function App() {
     taskId: null,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleApi = () => {
+    // side effect
+    // starting call API
+
+    setLoading(true);
     fetch("http://localhost:4000/tasks", { method: "GET" })
       .then((res) => {
         return res.json();
@@ -27,11 +33,19 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   React.useEffect(() => {
+    // life cycle
     handleApi();
+
+    return () => {
+      console.log("component will unmount");
+    };
   }, []);
 
   return (
@@ -39,43 +53,47 @@ function App() {
       <div className="App">
         <Header setData={setData} setStatusModal={setStatusModal} />
 
-        <div className="container">
-          <div className="col">
-            <h1>To Do</h1>
-            <ListCard
-              tasks={data}
-              targetStatus={statusEnums.TODO}
-              setStatusModalEdit={setStatusModalEdit}
-            />
-          </div>
+        {loading ? (
+          "loading..."
+        ) : (
+          <div className="container">
+            <div className="col">
+              <h1>To Do</h1>
+              <ListCard
+                tasks={data}
+                targetStatus={statusEnums.TODO}
+                setStatusModalEdit={setStatusModalEdit}
+              />
+            </div>
 
-          <div className="col">
-            <h1>In Process</h1>
-            <ListCard
-              tasks={data}
-              targetStatus={statusEnums.IN_PROGRESS}
-              setStatusModalEdit={setStatusModalEdit}
-            />
-          </div>
+            <div className="col">
+              <h1>In Process</h1>
+              <ListCard
+                tasks={data}
+                targetStatus={statusEnums.IN_PROGRESS}
+                setStatusModalEdit={setStatusModalEdit}
+              />
+            </div>
 
-          <div className="col">
-            <h1>In Preview</h1>
-            <ListCard
-              tasks={data}
-              targetStatus={statusEnums.IN_REVIEW}
-              setStatusModalEdit={setStatusModalEdit}
-            />
-          </div>
+            <div className="col">
+              <h1>In Preview</h1>
+              <ListCard
+                tasks={data}
+                targetStatus={statusEnums.IN_REVIEW}
+                setStatusModalEdit={setStatusModalEdit}
+              />
+            </div>
 
-          <div className="col">
-            <h1>Done</h1>
-            <ListCard
-              tasks={data}
-              targetStatus={statusEnums.DONE}
-              setStatusModalEdit={setStatusModalEdit}
-            />
+            <div className="col">
+              <h1>Done</h1>
+              <ListCard
+                tasks={data}
+                targetStatus={statusEnums.DONE}
+                setStatusModalEdit={setStatusModalEdit}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Modal Edit */}
