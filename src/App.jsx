@@ -1,126 +1,78 @@
-import React, { useState } from "react";
-import "./App.css";
-// import Card from "./Components/Card";
-import Header from "./Components/Header";
-import ListCard from "./Components/ListCard";
-import Modal from "./Components/Modal";
-import { statusEnums } from "./utils/constants";
-import ModalEdit from "./Components/ModalEdit";
+import React from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Task from "./pages/Task";
+import NoFound from "./pages/NoFound";
+import TaskDetail from "./pages/TaskDetail";
+import NewTask from "./pages/NewTask";
+import ProtectRoute from "./Components/ProtectRoute";
 
-function App() {
-  const [data, setData] = useState([]);
-
-  const [statusModal, setStatusModal] = useState(false);
-
-  const [statusModalEdit, setStatusModalEdit] = useState({
-    status: false,
-    taskId: null,
-  });
-
-  const [loading, setLoading] = useState(false);
-
-  const handleApi = () => {
-    // side effect
-    // starting call API
-
-    setLoading(true);
-    fetch("http://localhost:4000/tasks", { method: "GET" })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  React.useEffect(() => {
-    // life cycle
-    handleApi();
-
-    return () => {
-      console.log("component will unmount");
-    };
-  }, []);
+const App = () => {
+  const [isLogin, setIsLogin] = React.useState(false);
 
   return (
-    <React.Fragment>
-      <div className="App">
-        <Header setData={setData} setStatusModal={setStatusModal} />
+    <div>
+      <ul>
+        <li>
+          <Link to="/task/1">task Detail</Link>
+        </li>
+        <li>
+          <Link to="/task">Task</Link>
+        </li>
+      </ul>
 
-        {loading ? (
-          "loading..."
-        ) : (
-          <div className="container">
-            <div className="col">
-              <h1>To Do</h1>
-              <ListCard
-                tasks={data}
-                targetStatus={statusEnums.TODO}
-                setStatusModalEdit={setStatusModalEdit}
-              />
-            </div>
+      <button
+        onClick={() => {
+          setIsLogin(true);
+        }}
+      >
+        Login
+      </button>
 
-            <div className="col">
-              <h1>In Process</h1>
-              <ListCard
-                tasks={data}
-                targetStatus={statusEnums.IN_PROGRESS}
-                setStatusModalEdit={setStatusModalEdit}
-              />
-            </div>
+      <button
+        onClick={() => {
+          setIsLogin(false);
+        }}
+      >
+        Logout
+      </button>
 
-            <div className="col">
-              <h1>In Preview</h1>
-              <ListCard
-                tasks={data}
-                targetStatus={statusEnums.IN_REVIEW}
-                setStatusModalEdit={setStatusModalEdit}
-              />
-            </div>
+      {isLogin && "user logged in"}
 
-            <div className="col">
-              <h1>Done</h1>
-              <ListCard
-                tasks={data}
-                targetStatus={statusEnums.DONE}
-                setStatusModalEdit={setStatusModalEdit}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-      {/* Modal Edit */}
-      {statusModalEdit.status ? (
-        <ModalEdit
-          setData={setData}
-          data={data}
-          id={statusModalEdit.taskId}
-          setStatusModal={setStatusModalEdit}
-        />
-      ) : (
-        ""
-      )}
+        <Route path="/task">
+          <Route
+            index
+            element={
+              <ProtectRoute userLogin={isLogin}>
+                <Task />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path=":id"
+            element={
+              <ProtectRoute userLogin={isLogin}>
+                <TaskDetail />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="new"
+            element={
+              <ProtectRoute userLogin={isLogin}>
+                <NewTask />
+              </ProtectRoute>
+            }
+          />
+        </Route>
 
-      {/* Modal Create */}
-
-      {statusModal ? (
-        <Modal
-          handleApi={handleApi}
-          setData={setData}
-          setStatusModal={setStatusModal}
-        />
-      ) : (
-        ""
-      )}
-    </React.Fragment>
+        <Route path="*" element={<NoFound />} />
+      </Routes>
+    </div>
   );
-}
+};
 
 export default App;
