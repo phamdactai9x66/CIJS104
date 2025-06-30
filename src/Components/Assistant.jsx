@@ -4,7 +4,11 @@ import { handleAI } from "../config/genmini";
 const Assistant = (props) => {
   const inputRef = React.useRef("");
 
+  const [loading, setLoading] = useState(false);
+
   const [dataConversation, setDataConversation] = useState([]);
+
+  const [dataAi, setDataAi] = useState([]);
 
   const onCloseAssistant = () => {
     props.setStatusAssistant(false);
@@ -13,22 +17,49 @@ const Assistant = (props) => {
   const onSubmit = async () => {
     const inputValue = inputRef.current.value;
 
-    const response = await handleAI(inputValue);
+    if (!inputValue) {
+      return alert("you should fill input");
+    }
+
+    const id = Date.now();
+
+    setLoading(true);
 
     setDataConversation((pre) => {
       return [
         ...pre,
         {
+          id: id + "_user",
           type: "user",
           message: inputValue,
-        },
-        {
-          type: "bot",
-          message: response,
+          created: id,
         },
       ];
     });
+
+    const response = await handleAI(inputValue);
+
+    setDataAi((pre) => {
+      return [
+        ...pre,
+        {
+          id: id + "_bot",
+          type: "bot",
+          message: response,
+          created: id,
+        },
+      ];
+    });
+
+    setLoading(false);
   };
+
+  const handleSortData = React.useMemo(() => {
+    return [...dataConversation, ...dataAi].sort((a, b) => {
+      return a.created - b.created;
+    });
+  }, [dataConversation, dataAi]);
+  //   console.log([...dataConversation, ...dataAi]);
 
   return (
     <div className="modal">
@@ -46,7 +77,7 @@ const Assistant = (props) => {
         <div className="body">
           {/* <p>{props.message}</p> */}
           <div className="conversation">
-            {dataConversation.map((item) => {
+            {handleSortData.map((item) => {
               if (item.type == "user") {
                 return <p style={{ textAlign: "right" }}>{item.message}</p>;
               }
@@ -54,6 +85,8 @@ const Assistant = (props) => {
               return <p>{item.message}</p>;
             })}
           </div>
+
+          {loading && <p>Loading...</p>}
 
           <div className="input">
             <input
@@ -63,7 +96,9 @@ const Assistant = (props) => {
               ref={inputRef}
               placeholder="typing..."
             />
-            <button onClick={onSubmit}>Send</button>
+            <button onClick={onSubmit} disabled={loading}>
+              Send
+            </button>
           </div>
         </div>
       </div>
