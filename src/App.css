@@ -52,11 +52,10 @@
   gap: 8px;
 }
 
-.container  .col {
+.container .col {
   flex: 1;
   border: 1px solid white;
 }
-
 
 .modal {
   position: fixed;
@@ -73,7 +72,7 @@
 .containerModal {
   position: relative;
 
-  text-align: left; 
+  text-align: left;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -86,7 +85,6 @@
   border-radius: 4px;
 }
 
-
 .containerModal .header {
   display: flex;
   justify-content: space-between;
@@ -95,12 +93,18 @@
 
 .containerModal .formModal {
   display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.containerModal .body .input {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
 }
 
 .iconClose {
- /* margin-right: 8px; */
- cursor: pointer;
+  /* margin-right: 8px; */
+  cursor: pointer;
 }

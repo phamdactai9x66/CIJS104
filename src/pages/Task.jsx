@@ -6,6 +6,7 @@ import ListCard from "../Components/ListCard";
 import Modal from "../Components/Modal";
 import { statusEnums } from "../utils/constants";
 import ModalEdit from "../Components/ModalEdit";
+import Assistant from "../Components/Assistant";
 
 function Task() {
   // console.log(searchParams.get("newModal"));
@@ -17,6 +18,8 @@ function Task() {
     status: false,
     taskId: null,
   });
+
+  const [modalAssistant, setModalAssistant] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -96,6 +99,14 @@ function Task() {
           </div>
         )}
       </div>
+
+      <button onClick={() => setModalAssistant(true)}>Assistant AI</button>
+
+      {modalAssistant ? (
+        <Assistant setStatusAssistant={setModalAssistant} />
+      ) : (
+        ""
+      )}
 
       {/* Modal Edit */}
       {statusModalEdit.status ? (
